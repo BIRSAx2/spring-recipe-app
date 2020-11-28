@@ -1,6 +1,7 @@
 package dev.mouhieddine.recipeapp.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Recipe {
@@ -17,6 +18,9 @@ public class Recipe {
   @Lob // will be stored in a blob field
   private Byte[] image;
 //private Difficulty difficulty;
+
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe") // defines the property where the recipe will be stored in the child
+  private Set<Ingredient> ingredients;
 
   @OneToOne(cascade = CascadeType.ALL) // on delete cascade on update cascade
   private Notes notes;
@@ -91,6 +95,14 @@ public class Recipe {
 
   public void setImage(Byte[] image) {
     this.image = image;
+  }
+
+  public Set<Ingredient> getIngredients() {
+    return ingredients;
+  }
+
+  public void setIngredients(Set<Ingredient> ingredients) {
+    this.ingredients = ingredients;
   }
 
   public Notes getNotes() {
