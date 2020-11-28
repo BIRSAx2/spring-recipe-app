@@ -17,7 +17,8 @@ public class Recipe {
   private String directions;
   @Lob // will be stored in a blob field
   private Byte[] image;
-  @Enumerated(value = EnumType.STRING) // ordinary will use the "index" to persist 1->EASY, string will use the string name so "EASY"
+  @Enumerated(value = EnumType.STRING)
+  // ordinary will use the "index" to persist 1->EASY, string will use the string name so "EASY"
   private Difficulty difficulty;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
@@ -26,6 +27,14 @@ public class Recipe {
 
   @OneToOne(cascade = CascadeType.ALL) // on delete cascade on update cascade
   private Notes notes;
+
+  @ManyToMany
+  @JoinTable(
+          name = "recipe_category", // name of the table
+          joinColumns = @JoinColumn(name = "recipe_id"), // name of the flied
+          inverseJoinColumns = @JoinColumn(name = "category_id") // name of the flied
+  )
+  private Set<Category> categories;
 
   public Long getId() {
     return id;
@@ -121,5 +130,13 @@ public class Recipe {
 
   public void setDifficulty(Difficulty difficulty) {
     this.difficulty = difficulty;
+  }
+
+  public Set<Category> getCategories() {
+    return categories;
+  }
+
+  public void setCategories(Set<Category> categories) {
+    this.categories = categories;
   }
 }
