@@ -17,9 +17,11 @@ public class Recipe {
   private String directions;
   @Lob // will be stored in a blob field
   private Byte[] image;
-//private Difficulty difficulty;
+  @Enumerated(value = EnumType.STRING) // ordinary will use the "index" to persist 1->EASY, string will use the string name so "EASY"
+  private Difficulty difficulty;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe") // defines the property where the recipe will be stored in the child
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+  // defines the property where the recipe will be stored in the child
   private Set<Ingredient> ingredients;
 
   @OneToOne(cascade = CascadeType.ALL) // on delete cascade on update cascade
@@ -111,5 +113,13 @@ public class Recipe {
 
   public void setNotes(Notes notes) {
     this.notes = notes;
+  }
+
+  public Difficulty getDifficulty() {
+    return difficulty;
+  }
+
+  public void setDifficulty(Difficulty difficulty) {
+    this.difficulty = difficulty;
   }
 }
