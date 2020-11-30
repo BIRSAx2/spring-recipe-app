@@ -1,6 +1,7 @@
 package dev.mouhieddine.recipeapp.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -14,6 +15,7 @@ public class Recipe {
   private Integer servings;
   private String source;
   private String url;
+  @Lob
   private String directions;
   @Lob // will be stored in a blob field
   private Byte[] image;
@@ -23,7 +25,7 @@ public class Recipe {
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
   // defines the property where the recipe will be stored in the child
-  private Set<Ingredient> ingredients;
+  private Set<Ingredient> ingredients=new HashSet<>();
 
   @OneToOne(cascade = CascadeType.ALL) // on delete cascade on update cascade
   private Notes notes;
@@ -34,7 +36,7 @@ public class Recipe {
           joinColumns = @JoinColumn(name = "recipe_id"), // name of the flied
           inverseJoinColumns = @JoinColumn(name = "category_id") // name of the flied
   )
-  private Set<Category> categories;
+  private Set<Category> categories = new HashSet<>();
 
   public Long getId() {
     return id;
@@ -121,6 +123,7 @@ public class Recipe {
   }
 
   public void setNotes(Notes notes) {
+    notes.setRecipe(this);
     this.notes = notes;
   }
 
@@ -138,5 +141,13 @@ public class Recipe {
 
   public void setCategories(Set<Category> categories) {
     this.categories = categories;
+  }
+
+  public void addIngredient(Ingredient ingredient) {
+    ingredient.setRecipe(this);
+    ingredients.add(ingredient);
+  }
+  public void addCategory(Category category){
+    categories.add(category);
   }
 }
