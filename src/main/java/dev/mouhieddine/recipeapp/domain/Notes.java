@@ -10,7 +10,7 @@ public class Notes {
   @Lob  // will be stored in glob field
   private String recipeNotes;
 
-  @OneToOne()
+  @OneToOne
   private Recipe recipe;
 
 

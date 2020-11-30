@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Created by jt on 6/13/17.
- */
 @Component
 public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
 

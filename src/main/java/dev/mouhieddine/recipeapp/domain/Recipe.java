@@ -23,8 +23,7 @@ public class Recipe {
   // ordinary will use the "index" to persist 1->EASY, string will use the string name so "EASY"
   private Difficulty difficulty;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-  // defines the property where the recipe will be stored in the child
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe") // defines the property where the recipe will be stored in the child
   private Set<Ingredient> ingredients=new HashSet<>();
 
   @OneToOne(cascade = CascadeType.ALL) // on delete cascade on update cascade

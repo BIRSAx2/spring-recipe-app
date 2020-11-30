@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 public class Ingredient {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private  Long id;
+  private Long id;
   private String description;
   private BigDecimal amount;
 
@@ -27,7 +27,7 @@ public class Ingredient {
     this.description = description;
     this.amount = amount;
     this.unitOfMeasure = unitOfMeasure;
-    this.recipe= recipe;
+    this.recipe = recipe;
   }
 
   public Ingredient() {
