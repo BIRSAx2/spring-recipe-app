@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 @Controller
 public class IndexController {
-  RecipeService recipeService;
+  private RecipeService recipeService;
 
   public IndexController(RecipeService recipeService) {
     this.recipeService = recipeService;
