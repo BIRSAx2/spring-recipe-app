@@ -4,10 +4,14 @@ import dev.mouhieddine.recipeapp.domain.Recipe;
 import dev.mouhieddine.recipeapp.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,18 +19,23 @@ import static org.mockito.Mockito.*;
 
 /**
  * @author : Mouhieddine.dev
- * @created : 12/4/2020, Friday
+ * @since : 12/4/2020, Friday
  **/
+@ExtendWith(MockitoExtension.class)
 class RecipeServiceImplTest {
-  private RecipeServiceImpl recipeService;
+
 
   @Mock
   private RecipeRepository recipeRepository;
+  @InjectMocks
+  private RecipeServiceImpl recipeService;
+
+  private Long RECIPE_ID=1L;
 
   @BeforeEach
+
   void setUp() {
-    MockitoAnnotations.initMocks(this);
-    recipeService = new RecipeServiceImpl(recipeRepository);
+//    recipeService = new RecipeServiceImpl(recipeRepository);
   }
 
   @Test
@@ -38,8 +47,21 @@ class RecipeServiceImplTest {
     when(recipeRepository.findAll()).thenReturn(recipesData);
 
     Set<Recipe> recipes = recipeService.getRecipes();
-    assertEquals(recipes.size(),1);
+    assertEquals(recipes.size(), 1);
 
-    verify(recipeRepository,times(1)).findAll();
+    verify(recipeRepository, times(1)).findAll();
+  }
+
+  @Test
+  void findRecipeById() {
+    Recipe recipe = new Recipe();
+    recipe.setId(RECIPE_ID);
+    when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(recipe));
+
+    Recipe returnRecipe = recipeService.findRecipeById(RECIPE_ID);
+    assertNotNull(returnRecipe, "Null Recipe returned");
+    verify(recipeRepository, times(1)).findById(anyLong());
+    verify(recipeRepository, never()).findAll();
+
   }
 }
