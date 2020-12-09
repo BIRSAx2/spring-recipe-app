@@ -34,9 +34,11 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
   public void onApplicationEvent(ContextRefreshedEvent event) {
     recipeRepository.saveAll(getRecipes());
     log.debug("Loading bootstrap data");
+    System.out.println("Loading bootstrap data");
   }
 
   private List<Recipe> getRecipes() {
+    System.out.println("Getting bootstrap data");
 
     List<Recipe> recipes = new ArrayList<>(2);
 
