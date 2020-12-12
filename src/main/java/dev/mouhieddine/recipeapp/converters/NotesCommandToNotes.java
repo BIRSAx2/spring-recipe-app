@@ -5,11 +5,13 @@ import dev.mouhieddine.recipeapp.domain.Notes;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 
 /**
  * @author : Mouhieddine.dev
  * @since : 12/11/2020, Friday
  **/
+@Component
 public class NotesCommandToNotes implements Converter<NotesCommand, Notes> {
   @Synchronized
   @Nullable

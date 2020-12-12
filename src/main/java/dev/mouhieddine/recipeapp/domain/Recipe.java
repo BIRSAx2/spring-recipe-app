@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@EqualsAndHashCode(exclude= {"ingredients", "notes"})
-@ToString(exclude= {"ingredients", "notes"})
+@EqualsAndHashCode(exclude = {"ingredients", "notes"})
+@ToString(exclude = {"ingredients", "notes"})
 @Entity
 public class Recipe {
   @Id
@@ -30,8 +30,9 @@ public class Recipe {
   // ordinary will use the "index" to persist 1->EASY, string will use the string name so "EASY"
   private Difficulty difficulty;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe") // defines the property where the recipe will be stored in the child
-  private Set<Ingredient> ingredients=new HashSet<>();
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+  // defines the property where the recipe will be stored in the child
+  private Set<Ingredient> ingredients = new HashSet<>();
 
   @OneToOne(cascade = CascadeType.ALL) // on delete cascade on update cascade
   private Notes notes;
@@ -45,15 +46,18 @@ public class Recipe {
   private Set<Category> categories = new HashSet<>();
 
   public void setNotes(Notes notes) {
-    notes.setRecipe(this);
-    this.notes = notes;
+    if (notes != null) {
+      notes.setRecipe(this);
+      this.notes = notes;
+    }
   }
 
   public void addIngredient(Ingredient ingredient) {
     ingredient.setRecipe(this);
     ingredients.add(ingredient);
   }
-  public void addCategory(Category category){
+
+  public void addCategory(Category category) {
     categories.add(category);
   }
 }
