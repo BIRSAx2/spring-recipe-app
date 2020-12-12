@@ -7,14 +7,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 /**
@@ -30,10 +30,9 @@ class RecipeServiceImplTest {
   @InjectMocks
   private RecipeServiceImpl recipeService;
 
-  private Long RECIPE_ID=1L;
+  private Long RECIPE_ID = 1L;
 
   @BeforeEach
-
   void setUp() {
 //    recipeService = new RecipeServiceImpl(recipeRepository);
   }
@@ -63,5 +62,17 @@ class RecipeServiceImplTest {
     verify(recipeRepository, times(1)).findById(anyLong());
     verify(recipeRepository, never()).findAll();
 
+  }
+
+  @Test
+  public void testDeleteById() throws Exception {
+
+    //given
+    Long idToDelete = 2L;
+    //when
+    recipeService.deleteById(idToDelete);
+    //no 'when', since method has void return type
+    //then
+    verify(recipeRepository, times(1)).deleteById(anyLong());
   }
 }
