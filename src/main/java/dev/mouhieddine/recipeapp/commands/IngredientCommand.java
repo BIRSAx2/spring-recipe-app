@@ -1,9 +1,6 @@
 package dev.mouhieddine.recipeapp.commands;
 
-import dev.mouhieddine.recipeapp.domain.UnitOfMeasure;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -14,8 +11,11 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class IngredientCommand {
   private Long id;
+  private Long recipeId;
   private String description;
   private BigDecimal amount;
   private UnitOfMeasureCommand unitOfMeasure;

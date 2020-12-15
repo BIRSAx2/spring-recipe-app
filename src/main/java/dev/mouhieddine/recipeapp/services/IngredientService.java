@@ -8,4 +8,6 @@ import dev.mouhieddine.recipeapp.commands.IngredientCommand;
  **/
 public interface IngredientService {
   IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId);
+  void deleteById(Long recipeId, Long ingredientId);
+  IngredientCommand saveIngredientCommand(IngredientCommand command);
 }

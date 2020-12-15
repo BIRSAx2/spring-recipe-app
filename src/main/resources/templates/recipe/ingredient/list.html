@@ -17,8 +17,14 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-primary">
 
-                <div class="panel-heading">
-                    <h1 class="panel-title">Ingredients</h1>
+                <div class="panel-heading row ">
+                    <div class="col-10">
+                        <h1 class="panel-title ">Ingredients</h1>
+                    </div>
+                    <div class="col-2">
+                        <a class="btn btn-primary"
+                           th:href="@{'/recipe/' + ${recipe.getId()} + '/ingredient/new'}">New</a>
+                    </div>
                 </div>
                 <div class="panel-body">
 
@@ -49,7 +55,7 @@
                             </tr>
                             <tr th:each="ingredient : ${recipe.ingredients}">
                                 <td th:text="${ingredient.id}">334</td>
-                                <td th:text="${ingredient.amount} + ' ' + ${ingredient.unitOfMeasure.getDescription()} + ' ' + ${ingredient.description} + '/show'">
+                                <td th:text="${ingredient.amount} + ' ' + ${ingredient.unitOfMeasure.getDescription()} + ' ' + ${ingredient.description}">
                                     Tasty Goodnees 3
                                 </td>
                                 <td><a href="#"
