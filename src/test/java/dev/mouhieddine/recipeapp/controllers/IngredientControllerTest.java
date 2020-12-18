@@ -77,24 +77,6 @@ class IngredientControllerTest {
             .andExpect(model().attributeExists("ingredient"));
   }
 
-//  @Test
-//  void testDeleteIngredient() throws Exception {
-//
-//    //given
-//    RecipeCommand recipeCommand = new RecipeCommand();
-//    IngredientCommand ingredientCommand = new IngredientCommand();
-//
-//    //when
-//    when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
-//    when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
-//
-//    //then
-//    mockMvc.perform(get("/recipe/1/ingredient/1/delete"))
-//            .andExpect(status().is3xxRedirection())
-//            .andExpect(view().name("recipe/ingredients"))
-//            .andExpect(model().attributeExists("recipe"));
-//  }
-
 
   @Test
   void testUpdateIngredientForm() throws Exception {
@@ -142,5 +124,17 @@ class IngredientControllerTest {
             .andExpect(model().attributeExists("uomList"));
     verify(recipeService, times(1)).findCommandById(anyLong());
     verify(unitOfMeasureService, times(1)).getUnitOfMeasures();
+  }
+  @Test
+  void testDeleteIngredient() throws Exception {
+    // given
+    // when
+    // then
+
+    mockMvc.perform(get("/recipe/1/ingredient/1/delete"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:/recipe/1/ingredients"));
+
+    verify(ingredientService,times(1)).deleteByRecipeIdAndIngredientId(anyLong(),anyLong());
   }
 }

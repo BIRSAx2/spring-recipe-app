@@ -57,19 +57,6 @@ public class IngredientServiceImpl implements IngredientService {
     return ingredientCommandOptional.get();
   }
 
-  @Override
-  @Transactional
-  public void deleteById(Long recipeId, Long ingredientId) {
-    Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
-
-    if (recipeOptional.isEmpty()) {
-      // todo impl error handling
-      log.error("recipe id not found. Id: " + recipeId);
-    }
-    recipeRepository.findById(recipeId).get().getIngredients().removeIf(ingredient -> ingredient.getId().equals(ingredientId));
-  }
-
-  @Override
   @Transactional
   public IngredientCommand saveIngredientCommand(IngredientCommand command) {
     if (command == null) throw new RuntimeException("Ingredient Command object must not be null");
@@ -108,4 +95,28 @@ public class IngredientServiceImpl implements IngredientService {
     }
     return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
   }
+
+  @Override
+  @Transactional
+  public void deleteByRecipeIdAndIngredientId(Long recipeId, Long ingredientId) {
+    log.debug("Deleting ingredient " + ingredientId + " from recipe " + recipeId);
+    Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+    if (recipeOptional.isEmpty()) {
+      // todo impl error handling
+      log.error("recipe id not found. Id: " + recipeId);
+      throw new RuntimeException("Recipe not found");
+    }
+    Recipe recipe = recipeOptional.get();
+    Optional<Ingredient> ingredientOptional = recipeOptional.get().getIngredients().stream().filter(ingredient -> ingredient.getId().equals(ingredientId)).findFirst();
+    if (ingredientOptional.isPresent()) {
+      log.debug("Found ingredient " + ingredientId + " in recipe " + recipeId);
+      Ingredient ingredientToDelete = ingredientOptional.get();
+      ingredientToDelete.setRecipe(null);
+      recipe.getIngredients().remove(ingredientOptional.get());
+      recipeRepository.save(recipe);
+      log.debug("Ingredient " + ingredientId + " deleted");
+
+    }
+  }
+
 }
