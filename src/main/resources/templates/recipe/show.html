@@ -16,9 +16,17 @@
             <div class="panel-group">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h1 class="panel-title" th:text="${recipe.description}">Recipe Description Here!</h1>
+                        <h1 class="panel-title" th:text="${recipe.description}">Recipe title/description Here!</h1>
                     </div>
+
                     <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img src="../../static/images/placeholder400x400.png" alt="" width="200px"
+                                     height="200px"
+                                     th:src="@{/images/placeholder400x400.png}">
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-3">
                                 <h5>Categories:</h5>
@@ -32,6 +40,8 @@
                                     </li>
                                 </ul>
                             </div>
+
+
                         </div>
                         <div class="row">
                             <div class="col-md-3">
