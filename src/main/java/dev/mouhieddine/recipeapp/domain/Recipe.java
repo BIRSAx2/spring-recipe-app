@@ -1,14 +1,17 @@
 package dev.mouhieddine.recipeapp.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+
 @EqualsAndHashCode(exclude = {"ingredients", "notes"})
 @ToString(exclude = {"ingredients", "notes"})
 @Entity
