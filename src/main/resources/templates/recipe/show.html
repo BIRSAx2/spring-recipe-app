@@ -24,7 +24,8 @@
                             <div class="col-md-3">
                                 <img src="../../static/images/placeholder400x400.png" alt="" width="200px"
                                      height="200px"
-                                     th:src="@{/images/placeholder400x400.png}">
+                                     th:src="@{'/recipe/' + ${recipe.id} + '/recipeImage'}"
+                                >
                             </div>
                             <div>
                                 <a class="btn-primary btn" th:href="@{'/recipe/' + ${recipe.id} + '/image'}">Edit</a>

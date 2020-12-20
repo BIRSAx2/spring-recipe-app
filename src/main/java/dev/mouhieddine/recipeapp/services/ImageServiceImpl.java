@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -24,6 +23,25 @@ public class ImageServiceImpl implements ImageService {
     this.recipeRepository = recipeRepository;
   }
 
+  public static byte[] toPrimitives(Byte[] oBytes) {
+
+    byte[] bytes = new byte[oBytes.length];
+    for (int i = 0; i < oBytes.length; i++) {
+      bytes[i] = oBytes[i];
+    }
+    return bytes;
+
+  }
+
+  public static Byte[] toObjects(byte[] bytesPrim) {
+
+    Byte[] bytes = new Byte[bytesPrim.length];
+    int i = 0;
+    for (byte b : bytesPrim) bytes[i++] = b; //Autoboxing
+    return bytes;
+
+  }
+
   @Override
   public void saveImageFile(Long recipeId, MultipartFile image) {
     log.debug("Received an image file");
@@ -31,17 +49,11 @@ public class ImageServiceImpl implements ImageService {
     if (optionalRecipe.isEmpty()) throw new RuntimeException("Recipe not found for id:" + recipeId);
     Recipe recipe = optionalRecipe.get();
     try {
-      recipe.setImage(primitiveToWrapperObject(image.getBytes()));
+      recipe.setImage(toObjects(image.getBytes()));
     } catch (IOException e) {
       //todo handle better
       log.error("Error during the saving of the image file");
     }
     recipeRepository.save(recipe);
-  }
-
-  private Byte[] primitiveToWrapperObject(byte[] bytesPrimitive) {
-    Byte[] bytes = new Byte[bytesPrimitive.length];
-    Arrays.setAll(bytes, n -> bytesPrimitive[n]);
-    return bytes;
   }
 }
