@@ -37,7 +37,9 @@ class ImageControllerTest {
   @BeforeEach
   void setUp() {
     controller = new ImageController(imageService, recipeService);
-    mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+    mockMvc = MockMvcBuilders.standaloneSetup(controller)
+            .setControllerAdvice(new ExceptionHandlerController())
+            .build();
   }
 
   @Test
@@ -84,5 +86,12 @@ class ImageControllerTest {
     byte[] responseBytes = response.getContentAsByteArray();
     // then
     assertEquals(fakeImageText.getBytes().length, responseBytes.length);
+  }
+
+  @Test
+  void showByIdMalformedId() throws Exception {
+    mockMvc.perform(get("/recipe/a/recipeImage"))
+            .andExpect(status().isBadRequest())
+            .andExpect(view().name("400error"));
   }
 }
