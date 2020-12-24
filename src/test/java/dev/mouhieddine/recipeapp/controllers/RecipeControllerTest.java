@@ -2,6 +2,7 @@ package dev.mouhieddine.recipeapp.controllers;
 
 import dev.mouhieddine.recipeapp.commands.RecipeCommand;
 import dev.mouhieddine.recipeapp.domain.Recipe;
+import dev.mouhieddine.recipeapp.exceptions.NotFoundException;
 import dev.mouhieddine.recipeapp.services.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,10 +47,18 @@ class RecipeControllerTest {
 
   @Test
   void showById() throws Exception {
-    when(recipeService.findRecipeById(anyLong())).thenReturn(null);
+    when(recipeService.findRecipeById(anyLong())).thenReturn(Recipe.builder().id(RECIPE_ID).build());
     mockMvc.perform(get("/recipe/1/show"))
             .andExpect(status().isOk())
+            .andExpect(model().attributeExists("recipe"))
             .andExpect(view().name("recipe/show"));
+  }
+
+  @Test
+  void showByIdRecipeNotFound() throws Exception {
+    when(recipeService.findRecipeById(anyLong())).thenThrow(NotFoundException.class);
+    mockMvc.perform(get("/recipe/1/show"))
+            .andExpect(status().isNotFound());
   }
 
   @Test
