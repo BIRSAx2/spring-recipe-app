@@ -1,14 +1,14 @@
 package dev.mouhieddine.recipeapp.controllers;
 
 import dev.mouhieddine.recipeapp.commands.RecipeCommand;
+import dev.mouhieddine.recipeapp.exceptions.NotFoundException;
 import dev.mouhieddine.recipeapp.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author : Mouhieddine.dev
@@ -23,7 +23,7 @@ public class RecipeController {
     this.recipeService = recipeService;
   }
 
-  @GetMapping("/recipe/{id}/show")
+  @GetMapping({"/recipe/{id}/show", "/recipe/{id}"})
   public String showById(@PathVariable String id, Model model) {
     model.addAttribute("recipe", recipeService.findRecipeById(Long.valueOf(id)));
     return "recipe/show";
@@ -54,5 +54,25 @@ public class RecipeController {
   public String delete(@PathVariable String id, Model model) {
     recipeService.deleteById((Long.valueOf(id)));
     return "redirect:/";
+  }
+
+  //  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ExceptionHandler(NotFoundException.class)
+  public ModelAndView handleNotFoundException() {
+    log.error("Handling not found exception");
+    ModelAndView modelAndView = new ModelAndView();
+    modelAndView.setViewName("404error");
+    modelAndView.setStatus(HttpStatus.NOT_FOUND);
+    return modelAndView;
+  }
+
+  @ExceptionHandler(NumberFormatException.class)
+  public ModelAndView handleNumberFormatException(Exception exception) {
+    log.error("Handling not number error exception");
+    ModelAndView modelAndView = new ModelAndView();
+    modelAndView.setViewName("400error");
+    modelAndView.addObject("exception",exception);
+    modelAndView.setStatus(HttpStatus.BAD_REQUEST);
+    return modelAndView;
   }
 }
