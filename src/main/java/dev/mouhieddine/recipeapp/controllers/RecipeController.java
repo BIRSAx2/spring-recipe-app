@@ -7,8 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 /**
  * @author : Mouhieddine.dev
@@ -17,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @Slf4j
 public class RecipeController {
+  private final String VIEW_CREATE_OR_UPDATE_RECIPE_FORM = "recipe/recipeForm";
   private final RecipeService recipeService;
 
   public RecipeController(RecipeService recipeService) {
@@ -32,13 +36,22 @@ public class RecipeController {
   @GetMapping("/recipe/new")
   public String newRecipe(Model model) {
     model.addAttribute("recipe", new RecipeCommand());
-    return "recipe/recipeForm";
+    return VIEW_CREATE_OR_UPDATE_RECIPE_FORM;
   }
 
   // @ModelAttribute tells Spring to bind form posts to recipeCommand Object
   // this tells Spring to invoke this method when there is a post request to /recipe
   @PostMapping("/recipe")
-  public String saveOrUpdate(@ModelAttribute RecipeCommand recipeCommand) {
+  public String saveOrUpdate(@Valid @ModelAttribute RecipeCommand recipeCommand, BindingResult bindingResult, Model model) {
+    if (bindingResult.hasErrors()) {
+
+      bindingResult.getAllErrors().forEach(objectError -> {
+        log.debug(objectError.toString());
+      });
+      model.addAttribute("recipe", recipeService.findCommandById(recipeCommand.getId()));
+
+      return VIEW_CREATE_OR_UPDATE_RECIPE_FORM;
+    }
     RecipeCommand savedCommand = recipeService.saveRecipeCommand(recipeCommand);
     return "redirect:/recipe/" + savedCommand.getId() + "/show";
   }
@@ -46,7 +59,7 @@ public class RecipeController {
   @GetMapping("recipe/{id}/update")
   public String updateRecipe(@PathVariable String id, Model model) {
     model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
-    return "recipe/recipeForm";
+    return VIEW_CREATE_OR_UPDATE_RECIPE_FORM;
   }
 
 
