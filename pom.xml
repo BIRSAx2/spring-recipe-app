@@ -9,13 +9,13 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>dev.mouhieddine</groupId>
-    <artifactId>recipeapp</artifactId>
+    <artifactId>spring-recipe-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>recipeapp</name>
+    <name>spring-recipe-app</name>
     <description>Recipe App with Spring Boot</description>
 
     <properties>
-        <java.version>15</java.version>
+        <java.version>11</java.version>
     </properties>
 
     <dependencies>
